@@ -1,46 +1,19 @@
+cmake_minimum_required(VERSION 3.21)
 
-name: Build Android Geode mod
+project(GDToolsReplayLab VERSION 0.2.0)
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-  pull_request:
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-permissions:
-  contents: read
+if (NOT DEFINED ENV{GEODE_SDK})
+    message(FATAL_ERROR "GEODE_SDK is not set. Install the Geode SDK and set GEODE_SDK to its path.")
+endif()
 
-jobs:
-  build:
-    name: Build ${{ matrix.target }}
-    runs-on: ubuntu-latest
+add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
 
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - target: Android64
-            artifact: GDTools-Android64
-          - target: Android32
-            artifact: GDTools-Android32
+add_library(${PROJECT_NAME} SHARED
+    main.cpp
+)
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+setup_geode_mod()
 
-      - name: Build Geode mod
-        id: build
-        uses: geode-sdk/build-geode-mod@main
-        with:
-          sdk: latest
-          target: ${{ matrix.target }}
-          build-config: Release
-
-      - name: Upload compiled package
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.artifact }}
-          path: ${{ steps.build.outputs.build-output }}/*.geode
-          if-no-files-found: error
-          retention-days: 14
