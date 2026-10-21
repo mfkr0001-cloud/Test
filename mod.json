@@ -1,0 +1,27 @@
+{
+  "geode": "v5.0.0",
+  "gd": {
+    "android": "2.208",
+    "win": "2.208"
+  },
+  "id": "dev.chatgpt.gdtools",
+  "name": "GD Tools - Replay Lab",
+  "version": "v0.2.0",
+  "developer": "Local Project",
+  "description": "Gameplay tools with an in-level floating panel. Current build: basic no-death toggle.",
+  "tags": ["gameplay", "offline", "utility", "cheat"],
+  "settings": {
+    "noclip-enabled": {
+      "name": "No-Clip (skip death)",
+      "description": "Prevents the standard player-death handler from running. This is not a complete collision bypass.",
+      "type": "bool",
+      "default": false
+    },
+    "show-panel": {
+      "name": "Show floating panel",
+      "description": "Show the quick toggle in gameplay.",
+      "type": "bool",
+      "default": true
+    }
+  }
+}
